@@ -3,7 +3,8 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Todo, Priority } from "@/types";
-import { MdDragIndicator, MdEdit, MdDelete } from "react-icons/md";
+import { MdEdit, MdDelete } from "react-icons/md";
+import { BiSolidDashboard } from "react-icons/bi";
 
 interface SortableTodoItemProps {
   todo: Todo;
@@ -30,81 +31,81 @@ export function SortableTodoItem({
     opacity: isDragging ? 0.5 : 1,
   };
 
+  const getPriorityTextColor = () => {
+    switch (todo.priority) {
+      case "extreme":
+        return "text-[#FF0000]";
+      case "moderate":
+        return "text-[#00C853]";
+      case "low":
+        return "text-[#FFB800]";
+      default:
+        return "text-gray-600";
+    }
+  };
+
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4 lg:p-6 hover:shadow-md transition-shadow"
+      {...attributes}
+      {...listeners}
+      className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-grab active:cursor-grabbing"
     >
-      <div className="flex items-start space-x-2 sm:space-x-3 lg:space-x-4">
-        {/* Drag Handle */}
-        <div
-          {...attributes}
-          {...listeners}
-          className="cursor-move text-gray-400 hover:text-gray-600 mt-1 hidden sm:block"
-        >
-          <MdDragIndicator className="w-5 h-5 sm:w-6 sm:h-6" />
-        </div>
-
-        {/* Checkbox */}
-        <input
-          type="checkbox"
-          checked={todo.is_completed}
-          onChange={() => onToggleComplete(todo)}
-          className="w-4 h-4 sm:w-5 sm:h-5 mt-1 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer flex-shrink-0"
-        />
-
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-2 gap-2">
-            <h3
-              className={`text-base sm:text-lg font-semibold break-words ${
-                todo.is_completed ? "line-through text-gray-400" : "text-gray-800"
-              }`}
-            >
-              {todo.title}
-            </h3>
-            <span
-              className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium self-start ${getPriorityColor(
-                todo.priority
-              )}`}
-            >
-              {todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)}
-            </span>
-          </div>
-
-          <p
-            className={`text-xs sm:text-sm mb-3 break-words ${
-              todo.is_completed ? "line-through text-gray-400" : "text-gray-600"
-            }`}
+      {/* Header: Title and Priority */}
+      <div className="flex items-start justify-between mb-3">
+        <h3 className="font-medium text-[16px] text-[#0D224A] flex-1 pr-2">
+          {todo.title}
+        </h3>
+        <div className="flex items-center space-x-1">
+          <span className={`text-sm font-normal ${getPriorityTextColor()} text-white`}>
+            {todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)}
+          </span>
+          <button
+            className="text-gray-400 hover:text-gray-600"
+            onPointerDown={(e) => e.stopPropagation()}
           >
-            {todo.description}
-          </p>
+            <BiSolidDashboard className="w-4 h-4 text-[#8ca3cd]" />
+          </button>
+        </div>
+      </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
-            <span className="text-xs sm:text-sm text-gray-500">
-              Due {new Date(todo.todo_date).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </span>
+      {/* Description */}
+      <p className="font-normal text-[14px] text-[#4B5563] mb-4 line-clamp-2">
+        {todo.description}
+      </p>
 
-            <div className="flex items-center space-x-1 sm:space-x-2">
-              <button
-                onClick={() => onEdit(todo)}
-                className="p-1.5 sm:p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-              >
-                <MdEdit className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-              <button
-                onClick={() => onDelete(todo.id)}
-                className="p-1.5 sm:p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-              >
-                <MdDelete className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-            </div>
-          </div>
+      {/* Footer: Due Date and Actions */}
+      <div className="flex items-center justify-between">
+        <span className="font-normal text-[14px] text-[#4B5563]">
+          Due {new Date(todo.todo_date).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })}
+        </span>
+
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(todo);
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
+            className="p-2 bg-[#EEF7FF] text-[#4F46E5] hover:bg-blue-100 rounded-lg transition-colors w-[32px] h-[32px]"
+          >
+            <MdEdit className="w-4 h-4" />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(todo.id);
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
+            className="p-2 bg-[#FFE5E5] text-[#DC2626] hover:bg-red-100 rounded-lg transition-colors  w-[32px] h-[32px]"
+          >
+            <MdDelete className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </div>

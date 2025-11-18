@@ -271,14 +271,14 @@ export default function TodosPage() {
          </div>
          ) : (
          <div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Your Tasks</h2>
+            <h2 className="font-semibold text-[18px] text-[#0C0C0C] mb-4">Your Tasks</h2>
             <DndContext
                sensors={sensors}
                collisionDetection={closestCenter}
                onDragEnd={handleDragEnd}
             >
                <SortableContext items={todos.map((t) => t.id)} strategy={verticalListSortingStrategy}>
-               <div className="space-y-4">
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {todos.map((todo) => (
                      <SortableTodoItem
                      key={todo.id}
