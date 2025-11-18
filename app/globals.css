@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+   padding: 0;
+   margin: 0;
+   box-sizing: border-box;
+}
+
+body {
+   font-family: "Inter", sans-serif;
+   max-width: 100%;
+   overflow-x: hidden;
+   background: #fff;
+}
+
+html {
+   scroll-behavior: smooth;
+   margin: 0;
+   padding: 0;
+   max-width: 100%;
+   overflow-x: hidden;
+}
+
+.scrollbardiv::-webkit-scrollbar {
+   width: 6px;
+}
+
+.scrollbardiv::-webkit-scrollbar-track {
+   background: #f1f1f1;
+   border-radius: 3px;
+}
+
+.scrollbardiv::-webkit-scrollbar-thumb {
+   background: #8CA19F;
+   border-radius: 3px;
+}
+
+@media (min-width: 1320px) and (max-width: 1900px) {}
+
+@media (min-width: 1024px) and (max-width: 1320px) {}
+
+@media (min-width: 768px) and (max-width: 1024px) {}
+
+@media (min-width: 540px) and (max-width: 767px) {}
+
+@media (min-width: 540px) and (max-width: 767px) {}
+
+@media (min-width: 480px) and (max-width: 540px) {}
+
+@media (min-width: 320px) and (max-width: 480px) {}
